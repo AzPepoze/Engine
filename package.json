@@ -1,0 +1,24 @@
+{
+	"name": "FookFixed_Engine",
+	"version": "0.1.0",
+	"description": "",
+	"main": "src/Manager.js",
+	"scripts": {
+		"start": "electron .",
+		"build": "electron-builder"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"devDependencies": {
+		"electron": "^33.0.2",
+		"electron-builder": "^25.1.8"
+	},
+	"build": {
+		"asar": false,
+		"appId": "com.azpepoze.fookfixed_engine",
+		"win": {
+			"target": "zip"
+		}
+	}
+}

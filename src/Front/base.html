@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" style="background-color: black; height: 100%; width: 100%">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+		<title>Test XD</title>
+
+		<script src="./Remote.front.js"></script>
+
+		<style>
+			.display-content {
+				width: 100%;
+				height: 100%;
+				overflow: hidden;
+				transition: all 0.2s;
+				position: absolute;
+				top: 0px;
+				left: 0px;
+				pointer-events: none;
+			}
+
+			.display-content * {
+				pointer-events: auto;
+			}
+
+			* {
+				font-family: "Athiti-Regular";
+			}
+
+			#character-container {
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				z-index: -1;
+			}
+
+			.Character {
+				position: absolute;
+				transition: all 0.5s;
+			}
+
+			#background {
+				background: gray;
+				z-index: -2;
+			}
+		</style>
+	</head>
+	<body style="width: 100%; height: 100%; margin: 0px">
+		<div id="character-container" class="display-content"></div>
+		<div id="background" class="display-content"></div>
+	</body>
+</html>
