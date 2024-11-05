@@ -1,4 +1,10 @@
-## Function
+<p align="center" font-size="1">
+<strong style="font-size: 40px;">FookFixed Engine</strong>
+</p>
+
+-    A web-based visual novel game engine built with Electron (Chromium)
+
+# Function
 
 ### Load file
 
@@ -7,6 +13,8 @@
 ```
 LOAD ./path/to/your/file
 ```
+
+#
 
 ### Auto change character
 
@@ -20,6 +28,8 @@ ACC ENABLE
 ```
 ACC DISABLE
 ```
+
+#
 
 ### Set position
 
@@ -37,9 +47,13 @@ SET POS Character_Name Y -100
 SET POS Character_Name XY 100 -100
 ```
 
+#
+
 ### From direction
 
 -    [From direction] : [L], [R], [T], [B] (LEFT, RIGHT, TOP, BOTTOM)
+
+#
 
 ### Speaker
 
@@ -54,6 +68,8 @@ Character_Name Clothes_Name [From direction]
 ```
 นัท swim_suit [L]
 ```
+
+#
 
 ### Choice
 
@@ -85,7 +101,7 @@ END WITH
 END CHOICE
 ```
 
-### IN PROGRESS
+## IN PROGRESS
 
 JUMP [+/- number]
 
