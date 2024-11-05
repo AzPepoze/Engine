@@ -82,7 +82,7 @@ INSIDE CHOICE
 
 -    Each CHOICE : Text of that choice
 
-```python
+```css
 CHOICE
      //DO STUFF
 CHOICE

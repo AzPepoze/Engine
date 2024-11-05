@@ -174,9 +174,7 @@ async function HIDE_UI(id) {
 
 //------------------------------------------------
 
-async function ASK(data) {
-	
-}
+async function ASK(data) {}
 
 Recive_From_Front("Line_Function", function (function_name, ...args) {
 	return module.exports[function_name](...args);

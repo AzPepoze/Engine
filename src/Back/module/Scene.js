@@ -101,6 +101,10 @@ function remove_tab(data, num = 1) {
 	return data;
 }
 
+function remove_all_tab(data) {
+	return data.replace(/ {5}/g, "");
+}
+
 function valid_line(data) {
 	return data.trim() != "";
 }
@@ -167,7 +171,7 @@ async function Run_Scene_Line(data) {
 				Now_Run_Line++;
 				Next_Line = Now_Scene_Data[Now_Run_Line + 1];
 			}
-			await Line_Function.SET_TEXT(remove_tab(data));
+			await Line_Function.SET_TEXT(remove_all_tab(data));
 			break;
 	}
 }
@@ -181,3 +185,4 @@ module.exports = {
 };
 
 let All_Functions = { ...module.exports, ...Line_Function };
+// All_Functions.
