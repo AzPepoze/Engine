@@ -1,7 +1,7 @@
 const Scene = require("./module/Scene");
 
 async function Run() {
-	console.log(await Scene.Run_Scene_File("start.ffs"));
+	console.log(await Scene.LOAD("start.ffs"));
 }
 
 module.exports = {

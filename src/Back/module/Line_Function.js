@@ -8,18 +8,70 @@ Recive_From_Front("TypeText", function () {
 	typing = false;
 });
 
-async function Set_Dialogue_Data(data) {
+//----------------------------------------------
+
+let Current_Speaker_Data = {};
+
+async function SET_DISPLAY(Mode, Name, Skin) {
+	let This_Character_Data;
+
+	if (Mode == "Show") {
+		This_Character_Data = await Load_Character_Data(Name, Skin);
+		Current_Speaker_Data[Name] = This_Character_Data;
+	} else {
+		Current_Speaker_Data[Name] = null;
+		This_Character_Data = {
+			Name: Name,
+		};
+	}
+
+	Sent_To_Front("Character", Mode, This_Character_Data);
+}
+
+async function SHOW(Name, Skin) {
+	SET_DISPLAY("Show", Name, Skin);
+}
+
+async function HIDE(Name) {
+	SET_DISPLAY("Hide", Name);
+}
+
+async function SET_POS(Name, Axis, a, b, c) {
+	switch (Axis) {
+		case "X":
+			Current_Speaker_Data[Name].x = a;
+			Current_Speaker_Data[Name].transition = b;
+			break;
+
+		case "Y":
+			Current_Speaker_Data[Name].y = a;
+			Current_Speaker_Data[Name].transition = b;
+			break;
+
+		case "XY":
+			Current_Speaker_Data[Name].x = a;
+			Current_Speaker_Data[Name].y = b;
+			Current_Speaker_Data[Name].transition = c;
+			break;
+	}
+
+	Sent_To_Front("Character", "Show", Current_Speaker_Data[Name]);
+}
+
+//-----------------------------------------------
+
+async function SET_TEXT(data) {
 	typing = true;
 	Sent_To_Front("TypeText", data, "Data");
 	console.log("Dialogue", data);
 	if (data != null) {
-		await Wait_Press_Next(true);
+		await WAIT_PRESSNEXT(true);
 		if (typing) {
-			Skip_Dialogue();
+			SKIP();
 			while (typing) {
 				await sleep(1);
 			}
-			await Wait_Press_Next();
+			await WAIT_PRESSNEXT();
 		}
 	}
 
@@ -28,23 +80,19 @@ async function Set_Dialogue_Data(data) {
 
 let Last_Speaker = null;
 
-async function Set_Character_Display(Mode, Character_Data) {
-	Sent_To_Front("Character", Mode, Character_Data);
-}
-
-async function Set_Dialogue_Speaker(data) {
+async function SET_SPEAKER(data) {
 	console.log("Speaker", data);
 
-	await Set_Dialogue_Data(null);
+	await SET_TEXT(null);
 	Sent_To_Front("TypeText", "", "Speaker");
 
 	let Speaker = data;
 	if (Last_Speaker != Speaker) {
 		if (Last_Speaker != null) {
-			Set_Character_Display("Hide", await Load_Character_Data(Last_Speaker, null));
+			HIDE(Last_Speaker);
 		}
 		await sleep(500);
-		Set_Character_Display("Show", await Load_Character_Data(Speaker, null));
+		SHOW(Speaker);
 		Last_Speaker = Speaker;
 	}
 
@@ -58,7 +106,7 @@ async function Set_Dialogue_Speaker(data) {
 }
 
 //Skip---------------------------------------------
-async function Skip_Dialogue() {
+async function SKIP() {
 	if (typing) {
 		Sent_To_Front("TypeText", null, "Skip");
 		while (typing) {
@@ -68,7 +116,7 @@ async function Skip_Dialogue() {
 }
 
 let Press_Next = false;
-async function Wait_Press_Next(Stop_When_Not_Typing) {
+async function WAIT_PRESSNEXT(Stop_When_Not_Typing) {
 	if (Stop_When_Not_Typing && !typing) {
 		return 1;
 	}
@@ -77,7 +125,7 @@ async function Wait_Press_Next(Stop_When_Not_Typing) {
 		return 1;
 	} else {
 		await sleep(1);
-		return await Wait_Press_Next();
+		return await WAIT_PRESSNEXT();
 	}
 }
 
@@ -101,7 +149,7 @@ app.on("browser-window-blur", function () {
 
 //------------------------------------------------
 
-async function Reverse_Dialogue() {
+async function REVERSE() {
 	// console.log("REVERSE");
 	if (typing) {
 		Press_Next = true;
@@ -114,26 +162,35 @@ async function Reverse_Dialogue() {
 
 //------------------------------------------------
 
-async function Show_UI(id) {
-	Sent_To_Front("Show_UI", id);
+async function SHOW_UI(id) {
+	Sent_To_Front("SHOW_UI", id);
 	await sleep(500);
 }
 
-async function Hide_UI(id) {
-	Sent_To_Front("Hide_UI", id);
+async function HIDE_UI(id) {
+	Sent_To_Front("HIDE_UI", id);
 	await sleep(500);
 }
 
-module.exports = {
-	Set_Dialogue_Data,
-	Set_Dialogue_Speaker,
-	Skip_Dialogue,
-	Wait_Press_Next,
-	Show_UI,
-	Hide_UI,
-	Reverse_Dialogue,
-};
+//------------------------------------------------
+
+async function ASK(data) {
+	
+}
 
 Recive_From_Front("Line_Function", function (function_name, ...args) {
 	return module.exports[function_name](...args);
 });
+
+module.exports = {
+	SET_TEXT,
+	SET_SPEAKER,
+	SKIP,
+	WAIT_PRESSNEXT,
+	SHOW_UI,
+	HIDE_UI,
+	REVERSE,
+	SET_DISPLAY,
+	SHOW,
+	SET_POS,
+};

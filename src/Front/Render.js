@@ -95,14 +95,14 @@ async function TypeText(text, recived_id) {
 }
 
 //----------------------------------------------
-async function Show_UI(id) {
+async function SHOW_UI(id) {
 	const UI = await WaitForElement(`body > #${id}`);
 	UI.style.opacity = 1;
 	UI.style.userSelect = "";
 	await sleep(500);
 }
 
-async function Hide_UI(id) {
+async function HIDE_UI(id) {
 	const UI = await WaitForElement(`body > #${id}`);
 	UI.style.opacity = 0;
 	UI.style.userSelect = "none";
@@ -120,10 +120,6 @@ async function Character(Mode, Character_Data) {
 				Character = document.createElement("img");
 				Character.id = Character_Data.Name;
 				Character.className = "Character";
-				Character.src = Character_Data.src;
-				Character.style.marginLeft = `${Character_Data.x}%`;
-				Character.style.marginTop = `${Character_Data.y}%`;
-				Character.style.transform = `scale(${Character_Data.scale})`;
 
 				Character.style.opacity = 0;
 				requestAnimationFrame(() => {
@@ -132,6 +128,13 @@ async function Character(Mode, Character_Data) {
 
 				Character_Container.append(Character);
 			}
+
+			Character.src = Character_Data.src;
+			Character.style.marginLeft = `${Character_Data.x}%`;
+			Character.style.marginTop = `${Character_Data.y}%`;
+			Character.style.transform = `scale(${Character_Data.scale})`;
+			Character.style.transition = `all ${Character_Data.transition || 0.5}s`;
+
 			break;
 		case "Hide":
 			Character.style.opacity = 0;
@@ -155,7 +158,7 @@ Run();
 
 module.exports = {
 	TypeText,
-	Show_UI,
-	Hide_UI,
+	SHOW_UI,
+	HIDE_UI,
 	Character,
 };

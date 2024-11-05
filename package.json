@@ -7,9 +7,16 @@
 		"start": "electron .",
 		"build": "electron-builder"
 	},
-	"keywords": [],
-	"author": "",
-	"license": "ISC",
+	"keywords": [
+		"fookfixed",
+		"visual",
+		"novel",
+		"game",
+		"engine",
+		"azpepoze"
+	],
+	"author": "AzPepoze",
+	"license": "MIT",
 	"devDependencies": {
 		"electron": "^33.0.2",
 		"electron-builder": "^25.1.8"
