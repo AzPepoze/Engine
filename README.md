@@ -1,1 +1,1 @@
-# Full documentation is available on <a href="https://azpepoze.gitbook.io/fookfixed-engine" target="_blank">GitBook</a>.
+# Full documentation is available on [GitBook](https://azpepoze.gitbook.io/fookfixed-engine).
