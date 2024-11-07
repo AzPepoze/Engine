@@ -1,6 +1,0 @@
----
-icon: angles-down
----
-
-# Installation
-
