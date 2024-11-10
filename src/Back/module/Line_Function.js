@@ -1,7 +1,7 @@
 const { globalShortcut, app } = require("electron");
 const { sleep } = require("../../module/Normal");
 const { Recive_From_Front, Sent_To_Front } = require("../Remote.back");
-const { Load_Character_Data } = require("./Files");
+const { Load_Character_Data, Load_Background_Data } = require("./Files");
 
 let typing = false;
 Recive_From_Front("TypeText", function () {
@@ -40,18 +40,18 @@ async function SET_POS(Name, Axis, a, b, c) {
 	switch (Axis) {
 		case "X":
 			Current_Speaker_Data[Name].x = a;
-			Current_Speaker_Data[Name].transition = b;
+			Current_Speaker_Data[Name].Animation_Time = b;
 			break;
 
 		case "Y":
 			Current_Speaker_Data[Name].y = a;
-			Current_Speaker_Data[Name].transition = b;
+			Current_Speaker_Data[Name].Animation_Time = b;
 			break;
 
 		case "XY":
 			Current_Speaker_Data[Name].x = a;
 			Current_Speaker_Data[Name].y = b;
-			Current_Speaker_Data[Name].transition = c;
+			Current_Speaker_Data[Name].Animation_Time = c;
 			break;
 	}
 
@@ -162,14 +162,21 @@ async function REVERSE() {
 
 //------------------------------------------------
 
-async function SHOW_UI(id) {
-	Sent_To_Front("SHOW_UI", id);
-	await sleep(500);
+async function SHOW_UI(id, Animation_Time = 500) {
+	Sent_To_Front("SHOW_UI", id, Animation_Time);
+	await sleep(Animation_Time);
 }
 
-async function HIDE_UI(id) {
-	Sent_To_Front("HIDE_UI", id);
-	await sleep(500);
+async function HIDE_UI(id, Animation_Time = 500) {
+	Sent_To_Front("HIDE_UI", id, Animation_Time);
+	await sleep(Animation_Time);
+}
+
+//------------------------------------------------
+
+async function BG(path, Animation_Time = 500) {
+	Sent_To_Front("BG", Load_Background_Data(path), Animation_Time);
+	await sleep(Animation_Time);
 }
 
 //------------------------------------------------
@@ -191,4 +198,7 @@ module.exports = {
 	SET_DISPLAY,
 	SHOW,
 	SET_POS,
+	HIDE,
+	ASK,
+	BG,
 };

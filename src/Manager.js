@@ -16,7 +16,7 @@ async function createWindow() {
 		width: 800,
 		height: 600,
 		// autoHideMenuBar: true,
-		frame: false,
+		// frame: false,
 		titleBarStyle: "hidden",
 		webPreferences: {
 			nodeIntegration: true, // Enable `require` in renderer

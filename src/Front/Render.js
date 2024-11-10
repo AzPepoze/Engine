@@ -1,5 +1,5 @@
 const { sleep, WaitForElement } = require("../module/Normal");
-const { Load_File_JSON, Get_Config } = require("../Back/module/Files");
+const { Load_File_JSON, Get_Config, Get_Characters_Folder } = require("../Back/module/Files");
 const { ipcRenderer } = require("electron");
 
 let Type_Speed = 30;
@@ -95,22 +95,24 @@ async function TypeText(text, recived_id) {
 }
 
 //----------------------------------------------
-async function SHOW_UI(id) {
+async function SHOW_UI(id, Animation_Time) {
 	const UI = await WaitForElement(`body > #${id}`);
+	UI.style.transition = `all ${Animation_Time}ms`;
 	UI.style.opacity = 1;
 	UI.style.userSelect = "";
-	await sleep(500);
+	await sleep(Animation_Time);
 }
 
-async function HIDE_UI(id) {
+async function HIDE_UI(id, Animation_Time) {
 	const UI = await WaitForElement(`body > #${id}`);
+	UI.style.transition = `all ${Animation_Time}ms`;
 	UI.style.opacity = 0;
 	UI.style.userSelect = "none";
-	await sleep(500);
+	await sleep(Animation_Time);
 }
 //----------------------------------------------
 
-async function Character(Mode, Character_Data) {
+async function Character(Mode, Character_Data = {}) {
 	console.log(Character_Data);
 	const Character_Container = await WaitForElement("#character-container");
 	let Character = Character_Container.querySelector(`#${Character_Data.Name}`);
@@ -133,14 +135,46 @@ async function Character(Mode, Character_Data) {
 			Character.style.marginLeft = `${Character_Data.x}%`;
 			Character.style.marginTop = `${Character_Data.y}%`;
 			Character.style.transform = `scale(${Character_Data.scale})`;
-			Character.style.transition = `all ${Character_Data.transition || 0.5}s`;
+			Character.style.transition = `all ${Character_Data.Animation_Time || 0.5}s`;
 
 			break;
 		case "Hide":
 			Character.style.opacity = 0;
-			await sleep(500);
+			await sleep(Character_Data.Animation_Time || 500);
 			if (Character) Character.remove();
 			break;
+	}
+}
+
+//----------------------------------------------
+
+let Old_BG;
+
+async function BG(BG_Data, Animation_Time) {
+	console.log(BG_Data);
+	let BG_Container = await WaitForElement("#background");
+
+	let BG = document.createElement("img");
+	BG.src = BG_Data.src;
+	BG.className = "display-content";
+	BG.style.transition = `all ${Animation_Time}ms`;
+	BG.style.opacity = 0;
+	BG.style.objectFit = BG_Data.fit;
+	BG_Container.append(BG);
+
+	requestAnimationFrame(() => {
+		BG.style.opacity = 1;
+	});
+
+	if (Old_BG != null) {
+		Old_BG.style.transition = `all ${Animation_Time}ms`;
+		requestAnimationFrame(() => {
+			Old_BG.style.opacity = 0;
+			setTimeout((Old_BG) => {
+				Old_BG.remove();
+				Old_BG = BG;
+			}, Animation_Time);
+		});
 	}
 }
 
@@ -161,4 +195,5 @@ module.exports = {
 	SHOW_UI,
 	HIDE_UI,
 	Character,
+	BG,
 };
